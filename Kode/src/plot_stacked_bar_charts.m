@@ -62,7 +62,7 @@ for k_A = 1:length(A)
         hold on
         xticks([1:1:length(MCS_output_array)]);
         xticklabels(labels);
-        ylim([-4000 12000]);
+        ylim([-4000 8000]);
 
         scatter(x_vec,means,"MarkerEdgeColor", 'blue', 'LineWidth', 1)
         errorbar(x_vec,means, 2*std_around_mean,"Color", 'blue', 'LineWidth', 1, 'LineStyle','none');

@@ -43,11 +43,16 @@ classdef Mod_B6
         share_electricity_heat_pump =0;
         
         efficiency_dh_network = 0.85;
-
+        cop_heat_pump = 2.25;
+        lca_emissions_other_life_cycle_stages_heat_pump_gCO2eq_per_kWh = 21;
 
         emission_intensity_dh_delivered_heat_gCO2eq_per_kWh
         emission_intensity_dh_delivered_heat_gCO2eq_per_kWh_std_low
         emission_intensity_dh_delivered_heat_gCO2eq_per_kWh_std_high
+
+        emission_intensity_weu28_el_dh_del_heat_gCO2eq_per_kWh
+        emission_intensity_weu28_el_dh_del_heat_gCO2eq_per_kWh_std_low
+        emission_intensity_weu28_el_dh_del_heat_gCO2eq_per_kWh_std_high
 
         emission_intensity_dh_del_heat_w2030CCS_gCO2eq_per_kWh
         emission_intensity_dh_del_heat_w2030CCS_gCO2eq_per_kWh_std_low
@@ -57,10 +62,63 @@ classdef Mod_B6
         B_emission_intensity_dh_delivered_heat_mean_gCO2eq_per_kWh
         B_emission_intensity_dh_delivered_heat_gCO2eq_per_kWh_std_low
         B_emission_intensity_dh_delivered_heat_gCO2eq_per_kWh_std_high
+
+
         
     end
     
     methods
+
+        function obj = set_european_electricity_parameterization_and_recalculate(obj)
+            obj.emission_intensity_electricity_boiler_gCO2eq_per_kWh = obj.emission_intensity_eu28_nor_ns3720_2019_2075_gCO2eq_per_kWh;
+            obj.emission_intensity_electricity_heat_pump_gCO2eq_per_kWh = obj.lca_emissions_other_life_cycle_stages_heat_pump_gCO2eq_per_kWh+obj.emission_intensity_eu28_nor_ns3720_2019_2075_gCO2eq_per_kWh/obj.cop_heat_pump;
+
+            obj = obj.calculate_emission_intensity_of_dh;
+        end
+
+        function obj = set_norwegian_electricity_parameterization_and_recalculate(obj)
+            obj.emission_intensity_electricity_boiler_gCO2eq_per_kWh = obj.emission_intensity_nor_ns3720_2019_2075_gCO2eq_per_kWh;
+            obj.emission_intensity_electricity_heat_pump_gCO2eq_per_kWh = obj.lca_emissions_other_life_cycle_stages_heat_pump_gCO2eq_per_kWh+obj.emission_intensity_nor_ns3720_2019_2075_gCO2eq_per_kWh/obj.cop_heat_pump;
+
+            obj = obj.calculate_emission_intensity_of_dh;
+        end
+
+        function obj = set_new_heat_pump_COP(obj, COP)
+            obj.cop_heat_pump = COP;
+        end
+        
+        function obj = set_Oslo_parameterization_2016(obj)
+
+            obj.share_recovered_heat = 0.576;
+            obj.share_electricity_boiler = 0.280;
+            obj.share_bioenergy_briquettes = 0.0;
+            obj.share_bioenergy_biooil = 0.0018;
+            obj.share_bioenergy_pellets = 0.0355;
+            obj.share_bioenergy_biogas = 0.0;
+            obj.share_natural_gas = 0.008;
+            obj.share_light_oil = 0.002;
+            obj.share_drainage_heat = 0.0;
+            obj.share_smoke_gas = 0.0;
+            obj.share_waste_heat_computer_centre = 0.054;
+            obj.share_electricity_heat_pump = 0.032;
+        end
+        
+        function obj = set_Trondheim_parameterization_2016(obj)
+
+            obj.share_recovered_heat = 0.784;
+            obj.share_electricity_boiler = 0.065;
+            obj.share_bioenergy_briquettes = 0.021;
+            obj.share_bioenergy_biooil = 0;
+            obj.share_bioenergy_pellets = 0;
+            obj.share_bioenergy_biogas = 0.0044;
+            obj.share_natural_gas = 0.114;
+            obj.share_light_oil = 0.006;
+            obj.share_drainage_heat = 0;
+            obj.share_smoke_gas = 0;
+            obj.share_waste_heat_computer_centre = 0;
+            obj.share_electricity_heat_pump = 0;
+        end
+
 
         function obj = set_Oslo_parameterization(obj)
             
@@ -76,6 +134,42 @@ classdef Mod_B6
         obj.share_smoke_gas = 0.033;
         obj.share_waste_heat_computer_centre = 0.007;
         obj.share_electricity_heat_pump = 0.034;
+        end
+
+        function obj = set_Stockholm_parameterization(obj)
+            
+        obj.share_recovered_heat = 0.568;
+        obj.share_electricity_boiler = 0;
+        obj.share_bioenergy_briquettes = 0.0;
+        obj.share_bioenergy_biooil = 0.0;
+        obj.share_bioenergy_pellets = 0.0;
+        obj.share_bioenergy_biogas = 0.0;
+        obj.share_natural_gas = 0.0;
+        obj.share_light_oil = 0.0;
+        obj.share_drainage_heat = 0.0;
+        obj.share_smoke_gas = 0.0;
+        obj.share_waste_heat_computer_centre = 0.0;
+        obj.share_electricity_heat_pump = 0.0;
+        end
+
+        function obj = set_Gothenborg_parameterization(obj)
+            %% Current source, Holm & Ottosson (2016) - The future development of district heating in Gothenburg
+        obj.share_recovered_heat = 0.568;
+        obj.share_electricity_boiler = 0;
+        obj.share_bioenergy_briquettes = 0.095;
+        obj.share_bioenergy_biooil = 0.02;
+        obj.share_bioenergy_pellets = 0.031;
+        obj.share_bioenergy_biogas = 0.0;
+        obj.share_natural_gas = 0.189;
+        obj.share_light_oil = 0.0;
+        obj.share_drainage_heat = 0.0;
+        obj.share_smoke_gas = 0.0;
+        obj.share_waste_heat_computer_centre = 0.0;
+        obj.share_electricity_heat_pump = 0.116;
+        
+        obj.emission_intensity_electricity_boiler_gCO2eq_per_kWh = obj.emission_intensity_nor_ns3720_2019_2075_gCO2eq_per_kWh*1.3;
+        obj.emission_intensity_electricity_heat_pump_gCO2eq_per_kWh = obj.emission_intensity_nor_ns3720_2019_2075_gCO2eq_per_kWh*1.3/obj.cop_heat_pump;
+
         end
         
         function obj = calculate_emission_intensity_of_dh(obj)
@@ -166,6 +260,7 @@ classdef Mod_B6
                 + obj.share_electricity_heat_pump*obj.emission_intensity_electricity_heat_pump_gCO2eq_per_kWh...
                 )/obj.efficiency_dh_network;
 
+           
         end
 
     end

@@ -9,7 +9,7 @@ modern_landfill_emissions_2_air = MCS_output(pos_modern_lf).increased_landfillin
 modern_landfill_avoided_ng = MCS_output(pos_modern_lf).avoided_natural_gas_fossil_electr_production_Europe_kgCO2eq./MCS_output(pos_modern_lf).mass_ratio_displaced_waste_to_incinerated_waste;
 
 incineration_em2air = 10^3*MCS_output(pos_lf).fossil_carbon_fraction_displaced_waste_kgC_per_kgWaste*3.67; 
-incineration_replaced_heat = (MCS_output(pos_wi_oc).avoided_energy_production_Norway_kgCO2eq.*(1-MCS.efficiency_district_heating_grid))./MCS_output(pos_wi_oc).mass_ratio_displaced_waste_to_incinerated_waste;
+incineration_replaced_heat = (MCS_output(pos_wi_oc).avoided_energy_production_Norway_kgCO2eq./MCS_output(pos_wi_oc).mass_ratio_displaced_waste_to_incinerated_waste/(MCS.efficiency_district_heating_grid));
 
 i_ccs_biogenic_captured_carbon_kgCO2_per_ton = 10^3*MCS_output(pos_lf).biogenic_carbon_fraction_displaced_waste_kgC_per_kgWaste.*3.67.*(MCS.ccs_efficiency);
 i_ccs_em2air_gwp100_kgCO2eq_per_ton = incineration_em2air.*(1-MCS.ccs_efficiency)+(incineration_em2air.*MCS.ccs_efficiency.*(MCS.CCS_supply_chain_co2_leakage_rate_kgCO2_per_kgCO2+MCS.CCS_transport_emissions_kgCO2eq_per_kgCO2))...
@@ -81,6 +81,7 @@ legend({'Utslipp', 'Biogent CDR', 'Ungåtte utslipp', 'Netto'})
 xticklabels(labels)
 xtickangle(45)
 ylabel('kg CO_{2}ekv tonn avfall^{-1}')
+ylim([-1000 6000])
 
 
 %% Kunnskapsaksen, +46 kton avfall

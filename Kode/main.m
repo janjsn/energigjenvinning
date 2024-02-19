@@ -2,7 +2,11 @@
 import_data = 1;
 export = 0;
 
+file_path_municipal_calcs = 'C:\Users\jansn\OneDrive - NTNU\District heating\Europe\main.m';
+
 addpath(genpath(pwd()));
+
+
 
 % Import data from Lausselet et al. (2022)
 if import_data == 1
@@ -199,6 +203,13 @@ for i = 1:length(x_trd)
     end
 end
 
+%% Import Stegmann et al
+Stegmann_raw = StegmannData('Stegmann_et_al.xlsx','Data');
+Stegmann_emission_intensities = Stegmann_raw.get_emission_intensities();
+
+
+
+
 %% CALC WASTE
 trd_incinerated_waste_ton = 43362; % SSB, 2021
 trd_mixed_waste_generated_by_households_ton = 37740;
@@ -257,15 +268,19 @@ sum(sum(trd_dh_emissions_tonCO2eq))
 sum(sum(trd_dh_emissions_energy_alloc_tonCO2eq))
 sum(sum(trd_lca_emissions_waste_treatment_ton_CO2eq))
 
+pos_lf = 5;
+pos_modern_lf = 4;
+pos_wi_oc = 2;
+
 %% RUN INCENTIVES CODE
 main_incentives
 
 %% Calculate pipe-emissions from district heating
-pos_lf = 5;
-pos_modern_lf = 4;
-pos_wi_oc = 2;
+
 grid_loss = 1-Input.efficiency_district_heating_grid;
 energy_share_from_waste_incineration_w_energy_recovery = 0.762;
+
+
 
 do_KA_analysis = 0;
 
@@ -352,6 +367,11 @@ Oslo = Trondheim.set_Oslo_parameterization();
 
 Trondheim = Trondheim.calculate_emission_intensity_of_dh;
 Oslo = Oslo.calculate_emission_intensity_of_dh;
+
+%% GET MUNICIPAL DATA
+run(file_path_municipal_calcs)
+
+
 
 %wi_heat_produced_kWh_per_ton = 
 

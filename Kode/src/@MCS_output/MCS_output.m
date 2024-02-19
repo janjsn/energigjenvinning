@@ -96,6 +96,8 @@ classdef MCS_output
 
         delta_net_vs_recycling_kgCO2eq
         delta_net_to_recycling_benefit_ratio
+
+        
         
     end
     
