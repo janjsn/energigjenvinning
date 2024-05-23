@@ -76,8 +76,10 @@ classdef Namelist
         efficiency_natural_gas_electricity_production = [0.4 0.438 0.3 ]; % Poullikas et al
         
         lca_emissions_non_energy_heat_pump_gCO2eq_per_kWh = 21;
+        lca_emissions_embodied_ground_sourced_hp_gCO2eq_per_kWh = 10;
+        lca_emissions_embodied_electric_boiler_gCO2eq_per_kWh = 10;
         
-        emission_intensity_norwegian_electricity_gCO2eq_per_kWh = 537%18; % 31 Scarlat et al, 18 NS3720
+        emission_intensity_norwegian_electricity_gCO2eq_per_kWh = 18;%18; % 31 Scarlat et al, 18 NS3720
         emission_intensity_european_electricity_gCO2eq_per_kWh = 334;
         emission_intensity_natural_gas_gCO2eq_per_kWh = 537;
         emission_intensity_PV_gCO2eq_per_kWh = 31;
